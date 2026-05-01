@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Цифровий Щоденник Настрою</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-date" id="currentDate"></div>
+      <h1 class="header-title">Щоденник<br/><em>настрою</em></h1>
+      <p class="header-sub">Як ти почуваєшся сьогодні?</p>
+    </header>
+
+    <!-- MOOD PICKER -->
+    <section class="mood-section">
+      <div class="mood-grid">
+        <button class="mood-btn" data-mood="5" data-label="Чудово" data-emoji="🌟">
+          <span class="mood-emoji">🌟</span>
+          <span class="mood-label">Чудово</span>
+        </button>
+        <button class="mood-btn" data-mood="4" data-label="Добре" data-emoji="😊">
+          <span class="mood-emoji">😊</span>
+          <span class="mood-label">Добре</span>
+        </button>
+        <button class="mood-btn" data-mood="3" data-label="Нейтрально" data-emoji="😐">
+          <span class="mood-emoji">😐</span>
+          <span class="mood-label">Нейтрально</span>
+        </button>
+        <button class="mood-btn" data-mood="2" data-label="Погано" data-emoji="😔">
+          <span class="mood-emoji">😔</span>
+          <span class="mood-label">Погано</span>
+        </button>
+        <button class="mood-btn" data-mood="1" data-label="Жахливо" data-emoji="😞">
+          <span class="mood-emoji">😞</span>
+          <span class="mood-label">Жахливо</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- NOTE INPUT -->
+    <section class="note-section" id="noteSection">
+      <div class="note-card">
+        <div class="note-header">
+          <span class="selected-mood-display" id="selectedMoodDisplay"></span>
+          <span class="note-prompt">Розкажи докладніше...</span>
+        </div>
+        <textarea
+          id="noteInput"
+          class="note-textarea"
+          placeholder="Що вплинуло на твій настрій? Які думки крутяться в голові?"
+          maxlength="500"
+        ></textarea>
+        <div class="note-footer">
+          <span class="char-counter"><span id="charCount">0</span>/500</span>
+          <button class="save-btn" id="saveBtn">Зберегти запис</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hidden TTS voice/rate controls (used by card buttons) -->
+    <div style="display:none;">
+      <select id="tts-voiceSelect"></select>
+      <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" />
+    </div>
+
+    <!-- STATS BAR -->
+    <section class="stats-section" id="statsSection">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="statTotal">0</span>
+          <span class="stat-label">Записів</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statAvg">—</span>
+          <span class="stat-label">Середній настрій</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statStreak">0</span>
+          <span class="stat-label">Днів поспіль</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENTRIES LOG -->
+    <section class="entries-section" id="entriesSection">
+      <div class="entries-header">
+        <h2 class="entries-title">Мої записи</h2>
+        <button class="clear-btn" id="clearBtn">Очистити все</button>
+      </div>
+      <div class="entries-list" id="entriesList">
+        <div class="empty-state" id="emptyState">
+          <span class="empty-icon">✦</span>
+          <p>Ще немає жодного запису.<br/>Почни відстежувати свій настрій!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- QR МІКРОСЕРВІС -->
+    <section class="qr-section">
+      <div class="note-card">
+        <div class="note-header">
+          <span style="font-size:1.3rem;">📷</span>
+          <span class="note-prompt">Поділитися записом</span>
+        </div>
+        <input type="text" id="qrText" class="qr-input" placeholder="Вставте посилання або текст для QR-коду..." />
+        <div class="qr-color-row">
+          <label class="tts-label">Колір коду</label>
+          <input type="color" id="qrColor" class="qr-color-picker" value="#c9a96e" />
+        </div>
+        <div class="note-footer" style="justify-content:flex-end;">
+          <button onclick="generateQR()" class="save-btn">Згенерувати QR</button>
+        </div>
+        <div id="qrBox" class="qr-result">
+          <img id="qrImage" src="" alt="QR Code" class="qr-img" />
+          <button onclick="downloadQR()" class="clear-btn qr-download-btn">⬇ Завантажити</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
